@@ -8,7 +8,6 @@
     --border-color: rgba(212, 175, 55, 0.2);
     --border-light: rgba(255, 255, 255, 0.08);
     
-    /* Gold & Navy Palette */
     --gold-primary: #d4af37;
     --gold-light: #f3e5ab;
     --gold-dark: #aa8529;
@@ -55,13 +54,11 @@ body {
     background-attachment: fixed;
 }
 
-/* Typography Headings */
 h1, h2, h3, .brand-font {
     font-family: 'Cinzel', serif;
     letter-spacing: 0.5px;
 }
 
-/* HEADER & NAVBAR */
 .app-header {
     background: rgba(10, 15, 29, 0.85);
     backdrop-filter: blur(12px);
@@ -175,7 +172,6 @@ h1, h2, h3, .brand-font {
     border: 1px solid rgba(96, 165, 250, 0.4);
 }
 
-/* MAIN CONTENT */
 .main-content {
     flex: 1;
     max-width: 1380px;
@@ -184,7 +180,6 @@ h1, h2, h3, .brand-font {
     padding: 2rem 1.5rem;
 }
 
-/* BANNER & HERO */
 .hero-banner {
     position: relative;
     background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(6, 11, 20, 0.98)),
@@ -232,7 +227,6 @@ h1, h2, h3, .brand-font {
     gap: 1rem;
 }
 
-/* BUTTONS */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -287,7 +281,6 @@ h1, h2, h3, .brand-font {
     font-size: 0.82rem;
 }
 
-/* STATS CARDS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -337,7 +330,6 @@ h1, h2, h3, .brand-font {
     color: var(--text-secondary);
 }
 
-/* TABLE & DATA PANEL */
 .data-card {
     background: var(--bg-card);
     border: 1px solid var(--border-light);
@@ -416,7 +408,6 @@ h1, h2, h3, .brand-font {
     background: rgba(255, 255, 255, 0.02);
 }
 
-/* BADGES & PILLS */
 .status-badge {
     padding: 0.25rem 0.65rem;
     border-radius: 50px;
@@ -455,7 +446,6 @@ h1, h2, h3, .brand-font {
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* MODAL & FORMS */
 .modal-backdrop {
     display: none;
     position: fixed;
@@ -547,7 +537,6 @@ h1, h2, h3, .brand-font {
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
-/* FOOTER */
 .app-footer {
     background: rgba(6, 11, 20, 0.95);
     border-top: 1px solid var(--border-color);
@@ -580,7 +569,6 @@ h1, h2, h3, .brand-font {
     color: var(--text-muted);
 }
 
-/* AUDIO & MULTIMEDIA FLOATING PLAYER */
 .multimedia-bar {
     background: rgba(17, 24, 39, 0.8);
     border: 1px solid var(--border-color);
@@ -592,7 +580,6 @@ h1, h2, h3, .brand-font {
     font-size: 0.8rem;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     .nav-container { flex-direction: column; gap: 1rem; }
     .nav-menu { flex-wrap: wrap; justify-content: center; }

@@ -1,10 +1,4 @@
-/**
- * Interactive Scripts for Abogados & Socios
- * Client-side search filters, modal management, audio ambient sounds, dynamic calculations
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Live Filter for Tables
     const searchInput = document.getElementById('tableSearch');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -17,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Filter by Select Dropdown (e.g. estado)
     const filterSelect = document.getElementById('tableFilterSelect');
     if (filterSelect) {
         filterSelect.addEventListener('change', (e) => {
@@ -34,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Ambient Audio Controller
     const audioToggleBtn = document.getElementById('toggleAmbientAudio');
     const ambientAudio = document.getElementById('ambientAudio');
     if (audioToggleBtn && ambientAudio) {
@@ -58,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Modal Operations
 function openModal(id) {
     const m = document.getElementById(id);
     if (m) m.classList.add('show');
@@ -69,14 +60,12 @@ function closeModal(id) {
     if (m) m.classList.remove('show');
 }
 
-// Window click to close modal
 window.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal-backdrop')) {
         e.target.classList.remove('show');
     }
 });
 
-// Facturación tax auto-calculator
 function calculateTaxTotal() {
     const subtotalInput = document.getElementById('factura_subtotal');
     const impuestosInput = document.getElementById('factura_impuestos');
@@ -84,7 +73,7 @@ function calculateTaxTotal() {
 
     if (subtotalInput && impuestosInput && totalInput) {
         const subtotal = parseFloat(subtotalInput.value) || 0;
-        const taxRate = 0.19; // IVA 19%
+        const taxRate = 0.19;
         const tax = Math.round(subtotal * taxRate * 100) / 100;
         const total = Math.round((subtotal + tax) * 100) / 100;
 

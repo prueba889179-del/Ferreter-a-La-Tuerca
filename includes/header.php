@@ -1,8 +1,4 @@
 <?php
-/**
- * Header Global para Abogados & Socios
- * Requisito: Logotipo de empresa, Menú con enlaces a cada módulo, visible en todas las páginas, rol y sesión
- */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -20,16 +16,13 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Sistema Integral de Gestión Jurídica, Contratos y Facturación - Abogados & Socios">
     <title><?php echo isset($pageTitle) ? e($pageTitle) . ' | Abogados & Socios' : 'Abogados & Socios | Gestión Legal'; ?></title>
-    <!-- Favicon SVG -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20%22100%22%20%22100%22><text y=%22.9em%22 font-size=%2290%22>⚖️</text></svg>">
-    <!-- Estilos CSS -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <header class="app-header">
     <div class="nav-container">
-        <!-- Logotipo e Identidad Corporativa -->
         <a href="index.php" class="brand-logo" id="headerLogoLink">
             <div class="brand-icon">⚖️</div>
             <div>
@@ -38,7 +31,6 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
             </div>
         </a>
 
-        <!-- Menú de Navegación Principal -->
         <nav>
             <ul class="nav-menu">
                 <li>

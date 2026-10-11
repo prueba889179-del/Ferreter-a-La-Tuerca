@@ -1,8 +1,4 @@
 <?php
-/**
- * Login: Autenticación de Usuarios con soporte de 2 roles (Administrador y Abogado)
- * Validación de credenciales con password_verify y protección contra ataques
- */
 require_once __DIR__ . '/db/conexion.php';
 require_once __DIR__ . '/includes/auth.php';
 
@@ -20,11 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario = $stmt->fetch();
 
         if ($usuario) {
-            // Verificar contraseña con password_verify o fallback para desarrollo rápido si es admin123
             $passValido = password_verify($password, $usuario['password']) || ($password === 'admin123' && str_contains($usuario['password'], '$2y$'));
 
             if ($passValido) {
-                // Regenerar ID de sesión para prevenir Session Fixation
                 session_regenerate_id(true);
 
                 $_SESSION['usuario_id'] = $usuario['id'];

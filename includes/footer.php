@@ -1,6 +1,5 @@
 </main>
 
-<!-- Pie de Página (Footer Requerido: Información del desarrollador, empresa y año) -->
 <footer class="app-footer">
     <div class="footer-inner">
         <div class="footer-brand">
@@ -11,7 +10,6 @@
             <div style="margin-top: 1rem;">
                 <div class="multimedia-bar" style="display: inline-flex;">
                     <audio id="ambientAudio" loop preload="none">
-                        <!-- Audio ambiental relajante para lectura de contratos -->
                         <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mpeg">
                     </audio>
                     <span>🎵 Experiencia Acústica de Oficina Legal:</span>
@@ -46,7 +44,6 @@
     </div>
 </footer>
 
-<!-- Scripts JavaScript -->
 <script src="js/scripts.js"></script>
 </body>
 </html>

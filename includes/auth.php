@@ -1,13 +1,8 @@
 <?php
-/**
- * Funciones de Seguridad y Utilidades
- */
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Token CSRF
 function csrf_token() {
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -23,7 +18,6 @@ function verify_csrf() {
     }
 }
 
-// Verificación de autenticación
 function require_login() {
     if (!isset($_SESSION['usuario_id'])) {
         header("Location: login.php");
@@ -31,7 +25,6 @@ function require_login() {
     }
 }
 
-// Verificación de rol administrativo
 function require_admin() {
     require_login();
     if (($_SESSION['usuario_rol'] ?? '') !== 'administrador') {
@@ -40,17 +33,14 @@ function require_admin() {
     }
 }
 
-// Sanitización de salida XSS
 function e($string) {
     return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
 }
 
-// Formateo de moneda
 function formato_dinero($monto) {
     return '$ ' . number_format((float)$monto, 2, ',', '.');
 }
 
-// Formateo de fecha
 function formato_fecha($fecha) {
     if (!$fecha) return '-';
     return date('d/m/Y', strtotime($fecha));

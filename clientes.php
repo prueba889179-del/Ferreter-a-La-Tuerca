@@ -1,7 +1,4 @@
 <?php
-/**
- * Módulo de Gestión de Clientes (CRUD)
- */
 require_once __DIR__ . '/db/conexion.php';
 require_once __DIR__ . '/includes/auth.php';
 
@@ -15,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $accion = $_POST['accion'] ?? '';
 
-    // CREAR CLIENTE
     if ($accion === 'crear') {
         $rut = trim($_POST['rut_identificacion'] ?? '');
         $nombre = trim($_POST['nombre'] ?? '');
@@ -47,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ELIMINAR CLIENTE
     if ($accion === 'eliminar') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id > 0) {
@@ -62,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Obtener lista de clientes con conteo de contratos asociados
 $stmtClientes = $pdo->query("
     SELECT cl.*, COUNT(c.id) AS total_contratos
     FROM clientes cl
@@ -76,7 +70,7 @@ $pageTitle = 'Directorio de Clientes';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: gap: 1rem;">
     <div>
         <h1 class="brand-font" style="font-size: 1.8rem; color: #fff;">👥 Directorio de Clientes y Empresas</h1>
         <p style="color: var(--text-secondary); font-size: 0.9rem;">Registro comercial, datos de contacto y fiscalización de representación legal.</p>
@@ -149,7 +143,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- MODAL REGISTRO CLIENTE -->
 <div class="modal-backdrop" id="modalNuevoCliente">
     <div class="modal-box">
         <div class="modal-header">

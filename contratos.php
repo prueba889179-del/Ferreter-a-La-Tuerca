@@ -1,12 +1,4 @@
 <?php
-/**
- * Módulo de Contratos (CRUD Completo)
- * Funcionalidades:
- * - Creación de contratos jurídicos
- * - Listado con filtros interactivos por texto y estado
- * - Edición de cláusulas y estado contractual
- * - Eliminación segura (con confirmación y control de roles)
- */
 require_once __DIR__ . '/db/conexion.php';
 require_once __DIR__ . '/includes/auth.php';
 
@@ -15,13 +7,11 @@ require_login();
 $mensajeExito = '';
 $mensajeError = '';
 
-// Procesar Acciones POST (Crear, Editar, Eliminar)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
 
     $accion = $_POST['accion'] ?? '';
 
-    // CREAR CONTRATO
     if ($accion === 'crear') {
         $expediente = trim($_POST['numero_expediente'] ?? '');
         $titulo = trim($_POST['titulo'] ?? '');
@@ -61,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // EDITAR CONTRATO
     if ($accion === 'editar') {
         $id = (int)($_POST['id'] ?? 0);
         $titulo = trim($_POST['titulo'] ?? '');
@@ -94,11 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ELIMINAR CONTRATO
     if ($accion === 'eliminar') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id > 0) {
-            // Verificar permisos si se desea limitar
             try {
                 $stmt = $pdo->prepare("DELETE FROM contratos WHERE id = :id");
                 $stmt->execute([':id' => $id]);
@@ -110,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Obtener listado de contratos con joins
 $stmtContratos = $pdo->query("
     SELECT c.*, cl.nombre AS cliente_nombre, cl.empresa AS cliente_empresa, u.nombre AS abogado_nombre 
     FROM contratos c
@@ -120,7 +106,6 @@ $stmtContratos = $pdo->query("
 ");
 $contratos = $stmtContratos->fetchAll();
 
-// Listas para los formularios (clientes y abogados)
 $clientes = $pdo->query("SELECT id, nombre, empresa FROM clientes ORDER BY nombre ASC")->fetchAll();
 $abogados = $pdo->query("SELECT id, nombre FROM usuarios WHERE rol IN ('administrador', 'abogado') AND estado = 'activo' ORDER BY nombre ASC")->fetchAll();
 
@@ -150,7 +135,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 <?php endif; ?>
 
-<!-- PANEL DE TABLA CON FILTROS EN TIEMPO REAL -->
 <div class="data-card">
     <div class="card-header-flex">
         <h3 class="card-title">Listado General de Expedientes Contractuales</h3>
@@ -230,7 +214,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- MODAL: REGISTRAR NUEVO CONTRATO -->
 <div class="modal-backdrop" id="modalNuevoContrato">
     <div class="modal-box">
         <div class="modal-header">
@@ -314,7 +297,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- MODAL: EDITAR CONTRATO -->
 <div class="modal-backdrop" id="modalEditarContrato">
     <div class="modal-box">
         <div class="modal-header">

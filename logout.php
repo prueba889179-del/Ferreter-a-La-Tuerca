@@ -1,7 +1,4 @@
 <?php
-/**
- * Cierre de Sesión Seguro
- */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

@@ -1,8 +1,4 @@
 <?php
-/**
- * Página Principal (Home) - Abogados & Socios
- * Banner principal con imagen y texto, métricas en tiempo real, accesos directos a módulos
- */
 require_once __DIR__ . '/db/conexion.php';
 require_once __DIR__ . '/includes/auth.php';
 
@@ -10,13 +6,11 @@ require_login();
 
 $pageTitle = 'Panel Principal';
 
-// Métricas de contratos y facturación
 $totalContratos = $pdo->query("SELECT COUNT(*) FROM contratos")->fetchColumn();
 $contratosActivos = $pdo->query("SELECT COUNT(*) FROM contratos WHERE estado = 'Activo'")->fetchColumn();
 $totalClientes = $pdo->query("SELECT COUNT(*) FROM clientes")->fetchColumn();
 $montoFacturado = $pdo->query("SELECT COALESCE(SUM(total), 0) FROM facturas WHERE estado_pago = 'Pagado'")->fetchColumn();
 
-// Últimos contratos recientes
 $stmtRecientes = $pdo->query("
     SELECT c.*, cl.nombre AS cliente_nombre, u.nombre AS abogado_nombre 
     FROM contratos c
@@ -30,7 +24,6 @@ $contratosRecientes = $stmtRecientes->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- BANNER PRINCIPAL (HOME) SEGÚN PLANTILLA -->
 <section class="hero-banner">
     <div style="max-width: 800px;">
         <div style="display: inline-block; padding: 0.3rem 0.8rem; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); border-radius: 20px; font-size: 0.8rem; color: var(--gold-light); margin-bottom: 1rem; font-weight: 600;">
@@ -59,13 +52,12 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- SECCIÓN MULTIMEDIA (Video institucional & recursos según Parte E) -->
 <div class="data-card" style="padding: 1.5rem; margin-bottom: 2.5rem; background: linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(10, 15, 29, 0.95));">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h3 class="card-title">🎥 Complemento Multimedia: Presentación del Estudio</h3>
         <span style="font-size: 0.82rem; color: var(--gold-light); border: 1px solid var(--border-color); padding: 0.2rem 0.6rem; border-radius: 4px;">Recurso Educativo</span>
     </div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center;">
+    <div style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center; display: grid;">
         <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light); aspect-ratio: 16/9; background: #000;">
             <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/ScMzIvxBSi4?si=demo" title="Legaltech Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
@@ -83,7 +75,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- TARJETAS DE ESTADÍSTICAS -->
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-icon">📜</div>
@@ -115,7 +106,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- VISTA RÁPIDA: ÚLTIMOS CONTRATOS REGISTRADOS -->
 <div class="data-card">
     <div class="card-header-flex">
         <h3 class="card-title">⚖️ Contratos Recientes en Cartera</h3>

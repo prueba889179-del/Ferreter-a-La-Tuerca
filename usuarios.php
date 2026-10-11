@@ -1,11 +1,8 @@
 <?php
-/**
- * Módulo de Gestión de Usuarios y Roles (Exclusivo Administrador)
- */
 require_once __DIR__ . '/db/conexion.php';
 require_once __DIR__ . '/includes/auth.php';
 
-require_admin(); // Solo Administrador puede gestionar usuarios
+require_admin();
 
 $mensajeExito = '';
 $mensajeError = '';
@@ -15,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $accion = $_POST['accion'] ?? '';
 
-    // CREAR USUARIO
     if ($accion === 'crear') {
         $nombre = trim($_POST['nombre'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
@@ -48,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ELIMINAR USUARIO
     if ($accion === 'eliminar') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id === (int)$_SESSION['usuario_id']) {
@@ -148,7 +143,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- MODAL ALTA USUARIO -->
 <div class="modal-backdrop" id="modalNuevoUsuario">
     <div class="modal-box">
         <div class="modal-header">

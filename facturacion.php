@@ -1,12 +1,4 @@
 <?php
-/**
- * Módulo de Facturación y Cobranza Legal (CRUD Completo)
- * Funcionalidades:
- * - Emisión de facturas vinculadas a contratos y clientes
- * - Cálculo automático de impuestos (IVA 19%) y total
- * - Control de estados de pago (Pendiente, Pagado, Anulada)
- * - Filtrado y búsqueda interactiva
- */
 require_once __DIR__ . '/db/conexion.php';
 require_once __DIR__ . '/includes/auth.php';
 
@@ -15,13 +7,11 @@ require_login();
 $mensajeExito = '';
 $mensajeError = '';
 
-// Procesar Acciones POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
 
     $accion = $_POST['accion'] ?? '';
 
-    // CREAR FACTURA
     if ($accion === 'crear') {
         $folio = trim($_POST['folio_factura'] ?? '');
         $contratoId = (int)($_POST['contrato_id'] ?? 0);
@@ -34,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $estadoPago = $_POST['estado_pago'] ?? 'Pendiente';
         $notas = trim($_POST['notas'] ?? '');
 
-        // Obtener el cliente_id asociado al contrato
         $stmtContrato = $pdo->prepare("SELECT cliente_id FROM contratos WHERE id = :id");
         $stmtContrato->execute([':id' => $contratoId]);
         $clienteId = $stmtContrato->fetchColumn();
@@ -67,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ACTUALIZAR ESTADO DE PAGO
     if ($accion === 'actualizar_estado') {
         $id = (int)($_POST['id'] ?? 0);
         $nuevoEstado = $_POST['estado_pago'] ?? 'Pendiente';
@@ -79,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ELIMINAR FACTURA
     if ($accion === 'eliminar') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id > 0) {
@@ -90,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Obtener facturas con contratos y clientes
 $stmtFacturas = $pdo->query("
     SELECT f.*, c.numero_expediente, c.titulo AS contrato_titulo, cl.nombre AS cliente_nombre, cl.rut_identificacion
     FROM facturas f
@@ -100,7 +86,6 @@ $stmtFacturas = $pdo->query("
 ");
 $facturas = $stmtFacturas->fetchAll();
 
-// Listado de contratos disponibles para vincular factura
 $contratosLista = $pdo->query("
     SELECT c.id, c.numero_expediente, c.titulo, c.monto_acordado, cl.nombre AS cliente_nombre 
     FROM contratos c 
@@ -134,7 +119,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 <?php endif; ?>
 
-<!-- TABLA DE FACTURAS -->
 <div class="data-card">
     <div class="card-header-flex">
         <h3 class="card-title">Registro Contable de Facturas</h3>
@@ -195,7 +179,6 @@ require_once __DIR__ . '/includes/header.php';
                         </td>
                         <td style="text-align: right;">
                             <div style="display: inline-flex; gap: 0.4rem;">
-                                <!-- Formulario rápido para alternar estado de pago -->
                                 <form method="POST" action="facturacion.php" style="display:inline;">
                                     <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                                     <input type="hidden" name="accion" value="actualizar_estado">
@@ -225,7 +208,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- MODAL: REGISTRAR NUEVA FACTURA -->
 <div class="modal-backdrop" id="modalNuevaFactura">
     <div class="modal-box">
         <div class="modal-header">
