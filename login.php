@@ -44,17 +44,16 @@ $pageTitle = 'Acceso al Sistema';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div style="max-width: 480px; margin: 3rem auto;">
-    <div class="data-card" style="padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-gold);">
+<div style="max-width: 460px; margin: 3rem auto;">
+    <div class="data-card" style="padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
         <div style="text-align: center; margin-bottom: 2rem;">
-            <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚖️</div>
-            <h2 class="brand-font" style="font-size: 1.8rem; color: var(--gold-light);">Iniciar Sesión</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Portal Jurídico de Abogados &amp; Socios</p>
+            <h2 class="brand-font" style="font-size: 1.8rem; color: var(--gold-light); margin-bottom: 0.3rem;">Iniciar Sesión</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Portal de Abogados &amp; Socios</p>
         </div>
 
         <?php if (!empty($mensajeError)): ?>
             <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 0.85rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
-                ⚠️ <?php echo e($mensajeError); ?>
+                <?php echo e($mensajeError); ?>
             </div>
         <?php endif; ?>
 
@@ -62,7 +61,7 @@ require_once __DIR__ . '/includes/header.php';
             <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
 
             <div style="margin-bottom: 1.25rem;">
-                <label class="form-label" for="loginEmail">Correo Electrónico Corporativo</label>
+                <label class="form-label" for="loginEmail">Correo Electrónico</label>
                 <input type="email" id="loginEmail" name="correo" class="form-input" placeholder="ejemplo@abogados.com" required autofocus>
             </div>
 
@@ -72,15 +71,19 @@ require_once __DIR__ . '/includes/header.php';
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem; font-size: 1rem;">
-                🔐 Ingresar al Sistema
+                Ingresar al Sistema
             </button>
         </form>
 
-        <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--border-light); border-radius: 8px; font-size: 0.82rem;">
-            <p style="font-weight: 600; color: var(--gold-light); margin-bottom: 0.5rem;">📌 Cuentas de Acceso de Prueba (Demostración Caso Práctico):</p>
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+            ¿No tienes cuenta? <a href="registro.php" style="color: var(--gold-light); text-decoration: underline; font-weight: 500;">Regístrate aquí</a>
+        </div>
+
+        <div style="margin-top: 1.75rem; padding: 1rem; background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--border-light); border-radius: 8px; font-size: 0.82rem;">
+            <p style="font-weight: 600; color: var(--gold-light); margin-bottom: 0.5rem;">Cuentas de demostración:</p>
             <div style="display: flex; flex-direction: column; gap: 0.4rem; color: var(--text-secondary);">
-                <div><strong>1. Rol Administrador:</strong> <br>Correo: <code>admin@abogados.com</code> | Clave: <code>admin123</code></div>
-                <div><strong>2. Rol Abogado / Empleado:</strong> <br>Correo: <code>abogado@abogados.com</code> | Clave: <code>admin123</code></div>
+                <div><strong>Admin:</strong> admin@abogados.com | Clave: <code>admin123</code></div>
+                <div><strong>Abogado:</strong> abogado@abogados.com | Clave: <code>admin123</code></div>
             </div>
         </div>
     </div>

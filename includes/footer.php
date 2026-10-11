@@ -3,9 +3,9 @@
 <footer class="app-footer">
     <div class="footer-inner">
         <div class="footer-brand">
-            <h4 class="brand-font">⚖️ Abogados &amp; Socios</h4>
+            <h4 class="brand-font">Abogados &amp; Socios</h4>
             <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 420px;">
-                Firma legal líder especializada en contratos mercantiles, derecho societario, propiedad intelectual y litigios de alta complejidad. Innovación jurídica a través de nuestra plataforma LegalTech.
+                Firma legal especializada en contratos mercantiles, derecho societario, propiedad intelectual y litigios. Plataforma de gestión jurídica interna.
             </p>
             <div style="margin-top: 1rem;">
                 <div class="multimedia-bar" style="display: inline-flex;">

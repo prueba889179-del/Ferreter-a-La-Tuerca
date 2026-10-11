@@ -24,10 +24,9 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
 <header class="app-header">
     <div class="nav-container">
         <a href="index.php" class="brand-logo" id="headerLogoLink">
-            <div class="brand-icon">⚖️</div>
             <div>
                 <div class="brand-text-title brand-font">ABOGADOS &amp; SOCIOS</div>
-                <div class="brand-text-sub">ESTUDIO JURÍDICO &bull; LEGALTECH</div>
+                <div class="brand-text-sub">ESTUDIO JURÍDICO</div>
             </div>
         </a>
 
@@ -35,29 +34,29 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
             <ul class="nav-menu">
                 <li>
                     <a href="index.php" class="nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>" id="navInicio">
-                        <span>🏛️</span> Inicio
+                        Inicio
                     </a>
                 </li>
                 <li>
                     <a href="contratos.php" class="nav-link <?php echo ($currentPage == 'contratos.php') ? 'active' : ''; ?>" id="navContratos">
-                        <span>📜</span> Contratos
+                        Contratos
                     </a>
                 </li>
                 <li>
                     <a href="facturacion.php" class="nav-link <?php echo ($currentPage == 'facturacion.php') ? 'active' : ''; ?>" id="navFacturacion">
-                        <span>💳</span> Facturación
+                        Facturación
                     </a>
                 </li>
                 <li>
                     <a href="clientes.php" class="nav-link <?php echo ($currentPage == 'clientes.php') ? 'active' : ''; ?>" id="navClientes">
-                        <span>👥</span> Clientes
+                        Clientes
                     </a>
                 </li>
 
                 <?php if ($isLoggedIn && $userRole === 'administrador'): ?>
                 <li>
                     <a href="usuarios.php" class="nav-link <?php echo ($currentPage == 'usuarios.php') ? 'active' : ''; ?>" id="navUsuarios">
-                        <span>🛡️</span> Usuarios
+                        Usuarios
                     </a>
                 </li>
                 <?php endif; ?>
@@ -70,14 +69,19 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
                             <?php echo e(ucfirst($userRole)); ?>
                         </span>
                         <a href="logout.php" class="btn btn-secondary btn-sm" style="margin-left: 0.4rem; padding: 0.25rem 0.6rem;" title="Cerrar Sesión">
-                            🚪 Salir
+                            Salir
                         </a>
                     </div>
                 </li>
                 <?php else: ?>
                 <li>
-                    <a href="login.php" class="btn btn-primary btn-sm" id="navLogin">
-                        🔑 Iniciar Sesión
+                    <a href="login.php" class="btn btn-secondary btn-sm" id="navLogin">
+                        Iniciar Sesión
+                    </a>
+                </li>
+                <li>
+                    <a href="registro.php" class="btn btn-primary btn-sm" id="navRegistro">
+                        Registrarse
                     </a>
                 </li>
                 <?php endif; ?>
