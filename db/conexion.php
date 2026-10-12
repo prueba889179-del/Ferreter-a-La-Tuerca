@@ -18,7 +18,7 @@ if ($dbUrl) {
     // Variables individuales estándar de Railway o de entorno
     $host = getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: '127.0.0.1';
     $port = getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: '3306';
-    $db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'ferreteria_la_tuerca';
+    $db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'railway';
     $user = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
     $pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASSWORD') ?: getenv('DB_PASS') ?: '';
 }

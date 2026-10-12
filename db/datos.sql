@@ -1,19 +1,4 @@
--- Esquema de Base de Datos para Ferretería La Tuerca
--- Compatible con MySQL 8+, MariaDB, Railway y XAMPP
 
-SET FOREIGN_KEY_CHECKS = 0;
-
-DROP TABLE IF EXISTS `movimientos`;
-DROP TABLE IF EXISTS `detalle_compras`;
-DROP TABLE IF EXISTS `compras`;
-DROP TABLE IF EXISTS `detalle_ventas`;
-DROP TABLE IF EXISTS `ventas`;
-DROP TABLE IF EXISTS `productos`;
-DROP TABLE IF EXISTS `proveedores`;
-DROP TABLE IF EXISTS `clientes`;
-DROP TABLE IF EXISTS `usuarios`;
-
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- 1. TABLA DE USUARIOS
 CREATE TABLE `usuarios` (
