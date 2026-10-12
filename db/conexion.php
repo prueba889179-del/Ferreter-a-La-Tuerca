@@ -13,12 +13,12 @@ if ($dbUrl) {
     $port = $urlParts['port'] ?? 3306;
     $user = $urlParts['user'] ?? 'root';
     $pass = $urlParts['pass'] ?? '';
-    $db   = isset($urlParts['path']) ? ltrim($urlParts['path'], '/') : 'railway';
+    $db   = isset($urlParts['path']) ? ltrim($urlParts['path'], '/') : 'ferreteria_la_tuerca';
 } else {
     // Variables individuales estándar de Railway o de entorno
     $host = getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: '127.0.0.1';
     $port = getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: '3306';
-    $db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'railway';
+    $db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'ferreteria_la_tuerca';
     $user = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
     $pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASSWORD') ?: getenv('DB_PASS') ?: '';
 }
