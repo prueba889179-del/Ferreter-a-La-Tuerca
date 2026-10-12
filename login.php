@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['usuario_nombre'] = $usuario['nombre'];
                 $_SESSION['usuario_correo'] = $usuario['correo'];
                 $_SESSION['usuario_rol'] = $usuario['rol'];
-                $_SESSION['usuario_especialidad'] = $usuario['especialidad'];
 
                 header("Location: index.php");
                 exit();
@@ -48,7 +47,7 @@ require_once __DIR__ . '/includes/header.php';
     <div class="data-card" style="padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
         <div style="text-align: center; margin-bottom: 2rem;">
             <h2 class="brand-font" style="font-size: 1.8rem; color: var(--gold-light); margin-bottom: 0.3rem;">Iniciar Sesión</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Portal de Abogados &amp; Socios</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Ferretería La Tuerca - Control de Gestión</p>
         </div>
 
         <?php if (!empty($mensajeError)): ?>
@@ -62,7 +61,7 @@ require_once __DIR__ . '/includes/header.php';
 
             <div style="margin-bottom: 1.25rem;">
                 <label class="form-label" for="loginEmail">Correo Electrónico</label>
-                <input type="email" id="loginEmail" name="correo" class="form-input" placeholder="ejemplo@abogados.com" required autofocus>
+                <input type="email" id="loginEmail" name="correo" class="form-input" placeholder="usuario@latuerca.cl" required autofocus>
             </div>
 
             <div style="margin-bottom: 1.75rem;">
@@ -80,10 +79,11 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <div style="margin-top: 1.75rem; padding: 1rem; background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--border-light); border-radius: 8px; font-size: 0.82rem;">
-            <p style="font-weight: 600; color: var(--gold-light); margin-bottom: 0.5rem;">Cuentas de demostración:</p>
+            <p style="font-weight: 600; color: var(--gold-light); margin-bottom: 0.5rem;">Cuentas de prueba:</p>
             <div style="display: flex; flex-direction: column; gap: 0.4rem; color: var(--text-secondary);">
-                <div><strong>Admin:</strong> admin@abogados.com | Clave: <code>admin123</code></div>
-                <div><strong>Abogado:</strong> abogado@abogados.com | Clave: <code>admin123</code></div>
+                <div><strong>Administrador:</strong> admin@latuerca.cl | Clave: <code>admin123</code></div>
+                <div><strong>Vendedor:</strong> vendedor@latuerca.cl | Clave: <code>admin123</code></div>
+                <div><strong>Bodeguero:</strong> bodega@latuerca.cl | Clave: <code>admin123</code></div>
             </div>
         </div>
     </div>

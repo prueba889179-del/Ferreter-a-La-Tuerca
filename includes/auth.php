@@ -38,7 +38,7 @@ function e($string) {
 }
 
 function formato_dinero($monto) {
-    return '$ ' . number_format((float)$monto, 2, ',', '.');
+    return '$ ' . number_format((float)$monto, 0, ',', '.');
 }
 
 function formato_fecha($fecha) {

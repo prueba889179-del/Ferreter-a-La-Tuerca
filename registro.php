@@ -9,7 +9,6 @@ if (isset($_SESSION['usuario_id'])) {
 }
 
 $mensajeError = '';
-$mensajeExito = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
@@ -18,8 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correo       = trim($_POST['correo'] ?? '');
     $password     = $_POST['password'] ?? '';
     $confirm_pass = $_POST['confirm_password'] ?? '';
-    $especialidad = trim($_POST['especialidad'] ?? 'Derecho General');
+    $rol          = $_POST['rol'] ?? 'vendedor';
     $telefono     = trim($_POST['telefono'] ?? '');
+
+    if (!in_array($rol, ['vendedor', 'bodeguero'])) {
+        $rol = 'vendedor';
+    }
 
     if (empty($nombre) || empty($correo) || empty($password)) {
         $mensajeError = 'Por favor complete todos los campos obligatorios.';
@@ -39,15 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hashPass = password_hash($password, PASSWORD_BCRYPT);
             try {
                 $stmtInsert = $pdo->prepare("
-                    INSERT INTO usuarios (nombre, correo, password, rol, especialidad, telefono, estado)
-                    VALUES (:nombre, :correo, :password, 'abogado', :especialidad, :telefono, 'activo')
+                    INSERT INTO usuarios (nombre, correo, password, rol, telefono, estado)
+                    VALUES (:nombre, :correo, :password, :rol, :telefono, 'activo')
                 ");
                 $stmtInsert->execute([
-                    ':nombre'       => $nombre,
-                    ':correo'       => $correo,
-                    ':password'     => $hashPass,
-                    ':especialidad' => $especialidad ?: 'Derecho General',
-                    ':telefono'     => $telefono
+                    ':nombre'   => $nombre,
+                    ':correo'   => $correo,
+                    ':password' => $hashPass,
+                    ':rol'      => $rol,
+                    ':telefono' => $telefono
                 ]);
 
                 $nuevoId = $pdo->lastInsertId();
@@ -56,8 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['usuario_id'] = $nuevoId;
                 $_SESSION['usuario_nombre'] = $nombre;
                 $_SESSION['usuario_correo'] = $correo;
-                $_SESSION['usuario_rol'] = 'abogado';
-                $_SESSION['usuario_especialidad'] = $especialidad;
+                $_SESSION['usuario_rol'] = $rol;
 
                 header("Location: index.php");
                 exit();
@@ -75,8 +77,8 @@ require_once __DIR__ . '/includes/header.php';
 <div style="max-width: 520px; margin: 2.5rem auto;">
     <div class="data-card" style="padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
         <div style="text-align: center; margin-bottom: 2rem;">
-            <h2 class="brand-font" style="font-size: 1.8rem; color: var(--gold-light); margin-bottom: 0.3rem;">Crear Cuenta</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Registrarse en Abogados &amp; Socios</p>
+            <h2 class="brand-font" style="font-size: 1.8rem; color: var(--gold-light); margin-bottom: 0.3rem;">Registro de Usuario</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Ferretería La Tuerca</p>
         </div>
 
         <?php if (!empty($mensajeError)): ?>
@@ -95,13 +97,16 @@ require_once __DIR__ . '/includes/header.php';
 
             <div style="margin-bottom: 1.25rem;">
                 <label class="form-label" for="regCorreo">Correo Electrónico *</label>
-                <input type="email" id="regCorreo" name="correo" class="form-input" placeholder="ejemplo@abogados.com" value="<?php echo e($_POST['correo'] ?? ''); ?>" required>
+                <input type="email" id="regCorreo" name="correo" class="form-input" placeholder="ejemplo@latuerca.cl" value="<?php echo e($_POST['correo'] ?? ''); ?>" required>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                    <label class="form-label" for="regEspecialidad">Especialidad</label>
-                    <input type="text" id="regEspecialidad" name="especialidad" class="form-input" placeholder="Ej. Derecho Civil" value="<?php echo e($_POST['especialidad'] ?? ''); ?>">
+                    <label class="form-label" for="regRol">Rol / Cargo</label>
+                    <select id="regRol" name="rol" class="form-select">
+                        <option value="vendedor" <?php echo (($_POST['rol'] ?? '') === 'vendedor') ? 'selected' : ''; ?>>Vendedor</option>
+                        <option value="bodeguero" <?php echo (($_POST['rol'] ?? '') === 'bodeguero') ? 'selected' : ''; ?>>Bodeguero / Almacén</option>
+                    </select>
                 </div>
                 <div>
                     <label class="form-label" for="regTelefono">Teléfono</label>
@@ -121,7 +126,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem; font-size: 1rem;">
-                Registrarse
+                Completar Registro
             </button>
         </form>
 

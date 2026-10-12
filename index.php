@@ -4,148 +4,163 @@ require_once __DIR__ . '/includes/auth.php';
 
 require_login();
 
-$pageTitle = 'Panel Principal';
+$pageTitle = 'Dashboard';
 
-$totalContratos = $pdo->query("SELECT COUNT(*) FROM contratos")->fetchColumn();
-$contratosActivos = $pdo->query("SELECT COUNT(*) FROM contratos WHERE estado = 'Activo'")->fetchColumn();
-$totalClientes = $pdo->query("SELECT COUNT(*) FROM clientes")->fetchColumn();
-$montoFacturado = $pdo->query("SELECT COALESCE(SUM(total), 0) FROM facturas WHERE estado_pago = 'Pagado'")->fetchColumn();
+// Métricas de Ferretería
+$totalProductos   = $pdo->query("SELECT COUNT(*) FROM productos")->fetchColumn();
+$totalStock       = $pdo->query("SELECT COALESCE(SUM(stock), 0) FROM productos")->fetchColumn();
+$bajoStock        = $pdo->query("SELECT COUNT(*) FROM productos WHERE stock <= stock_minimo")->fetchColumn();
+$totalVentasMonto = $pdo->query("SELECT COALESCE(SUM(total), 0) FROM ventas WHERE estado = 'completada'")->fetchColumn();
+$totalComprasMonto= $pdo->query("SELECT COALESCE(SUM(total), 0) FROM compras WHERE estado = 'recibida'")->fetchColumn();
 
-$stmtRecientes = $pdo->query("
-    SELECT c.*, cl.nombre AS cliente_nombre, u.nombre AS abogado_nombre 
-    FROM contratos c
-    JOIN clientes cl ON c.cliente_id = cl.id
-    JOIN usuarios u ON c.abogado_id = u.id
-    ORDER BY c.creado_en DESC
+// Últimos movimientos de inventario
+$stmtMovs = $pdo->query("
+    SELECT m.*, p.codigo, p.nombre AS producto_nombre, u.nombre AS usuario_nombre
+    FROM movimientos m
+    JOIN productos p ON m.producto_id = p.id
+    JOIN usuarios u ON m.usuario_id = u.id
+    ORDER BY m.fecha DESC
+    LIMIT 6
+");
+$movimientosRecientes = $stmtMovs->fetchAll();
+
+// Productos con stock crítico
+$stmtCriticos = $pdo->query("
+    SELECT * FROM productos
+    WHERE stock <= stock_minimo
+    ORDER BY stock ASC
     LIMIT 5
 ");
-$contratosRecientes = $stmtRecientes->fetchAll();
+$productosCriticos = $stmtCriticos->fetchAll();
 
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="hero-banner">
-    <div style="max-width: 800px;">
-        <div style="display: inline-block; padding: 0.3rem 0.8rem; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); border-radius: 20px; font-size: 0.8rem; color: var(--gold-light); margin-bottom: 1rem; font-weight: 600;">
-            PLATAFORMA LEGALTECH &bull; CASO PRÁCTICO
-        </div>
-        <h1 class="hero-title">Gestión de Contratos &amp; <span>Facturación Jurídica</span></h1>
-        <p class="hero-desc">
-            Bienvenido a <strong>Abogados &amp; Socios</strong>, sistema centralizado para el control del ciclo de vida contractual, supervisión de aranceles y honorarios profesionales con estricta gobernanza jurídica y roles diferenciados.
-        </p>
-        <div class="hero-actions">
-            <a href="contratos.php" class="btn btn-primary" id="btnIrContratos">
-                📜 Gestionar Contratos
-            </a>
-            <a href="facturacion.php" class="btn btn-secondary" id="btnIrFacturacion">
-                💳 Módulo de Facturación
-            </a>
-            <a href="clientes.php" class="btn btn-secondary" id="btnIrClientes">
-                👥 Directorio de Clientes
-            </a>
-            <?php if ($_SESSION['usuario_rol'] === 'administrador'): ?>
-            <a href="usuarios.php" class="btn btn-secondary" id="btnIrUsuarios">
-                🛡️ Control de Usuarios
-            </a>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
+<div style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; color: var(--gold-light); margin-bottom: 0.3rem;">Ferretería La Tuerca</h1>
+    <p style="color: var(--text-secondary); font-size: 0.95rem;">Panel de control y resumen operativo de inventario, compras y ventas.</p>
+</div>
 
-<div class="data-card" style="padding: 1.5rem; margin-bottom: 2.5rem; background: linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(10, 15, 29, 0.95));">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 class="card-title">🎥 Complemento Multimedia: Presentación del Estudio</h3>
-        <span style="font-size: 0.82rem; color: var(--gold-light); border: 1px solid var(--border-color); padding: 0.2rem 0.6rem; border-radius: 4px;">Recurso Educativo</span>
+<!-- METRICAS PRINCIPALES -->
+<div class="metrics-grid">
+    <div class="metric-card">
+        <div class="metric-title">Total Productos</div>
+        <div class="metric-value"><?php echo number_format($totalProductos); ?></div>
+        <div class="metric-subtitle">Artículos en catálogo</div>
     </div>
-    <div style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center; display: grid;">
-        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light); aspect-ratio: 16/9; background: #000;">
-            <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/ScMzIvxBSi4?si=demo" title="Legaltech Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div>
-            <h4 style="color: var(--gold-light); margin-bottom: 0.5rem; font-size: 1.1rem;">Eficacia Operativa y Rigor Normativo</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
-                Nuestro módulo de contratos permite redactar, auditar y fiscalizar acuerdos de confidencialidad, mandatos judiciales y estatutos societarios en estricta coordinación con el departamento de contabilidad y facturación.
-            </p>
-            <ul style="color: var(--text-secondary); font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; padding-left: 1.2rem;">
-                <li>Seguimiento de estados: <em>Borrador &rarr; En Revisión &rarr; Activo &rarr; Finalizado</em>.</li>
-                <li>Integración directa con facturas fiscales correlativas.</li>
-                <li>Acceso controlado: Administrador (acceso total) y Abogado (gestión operativa).</li>
-            </ul>
-        </div>
+
+    <div class="metric-card">
+        <div class="metric-title">Unidades en Stock</div>
+        <div class="metric-value"><?php echo number_format($totalStock); ?></div>
+        <div class="metric-subtitle">Existencias físicas globales</div>
+    </div>
+
+    <div class="metric-card" style="<?php echo $bajoStock > 0 ? 'border-color: rgba(239, 68, 68, 0.4);' : ''; ?>">
+        <div class="metric-title" style="<?php echo $bajoStock > 0 ? 'color: #fca5a5;' : ''; ?>">Stock Crítico</div>
+        <div class="metric-value" style="<?php echo $bajoStock > 0 ? 'color: #f87171;' : ''; ?>"><?php echo number_format($bajoStock); ?></div>
+        <div class="metric-subtitle"><?php echo $bajoStock > 0 ? 'Requiere reabastecimiento' : 'Stock en niveles óptimos'; ?></div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-title">Total Ventas</div>
+        <div class="metric-value"><?php echo formato_dinero($totalVentasMonto); ?></div>
+        <div class="metric-subtitle">Ventas facturadas en sistema</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-title">Total Compras</div>
+        <div class="metric-value"><?php echo formato_dinero($totalComprasMonto); ?></div>
+        <div class="metric-subtitle">Inversión en reposición</div>
     </div>
 </div>
 
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon">📜</div>
-        <div>
-            <div class="stat-val"><?php echo e($totalContratos); ?></div>
-            <div class="stat-lbl">Expedientes Contractuales</div>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="color: #34d399; background: rgba(16, 185, 129, 0.1);">✅</div>
-        <div>
-            <div class="stat-val"><?php echo e($contratosActivos); ?></div>
-            <div class="stat-lbl">Contratos Vigentes</div>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="color: #60a5fa; background: rgba(37, 99, 235, 0.1);">👥</div>
-        <div>
-            <div class="stat-val"><?php echo e($totalClientes); ?></div>
-            <div class="stat-lbl">Empresas &amp; Clientes</div>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="color: #fbbf24; background: rgba(245, 158, 11, 0.1);">💰</div>
-        <div>
-            <div class="stat-val"><?php echo formato_dinero($montoFacturado); ?></div>
-            <div class="stat-lbl">Honorarios Cobrados</div>
-        </div>
+<!-- ACCIONES RÁPIDAS -->
+<div class="data-card" style="margin-bottom: 2rem; padding: 1.25rem;">
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+        <span style="font-weight: 600; color: var(--gold-light); font-size: 0.9rem; margin-right: 0.5rem;">Acciones Rápidas:</span>
+        <a href="ventas.php" class="btn btn-primary btn-sm">Nueva Venta</a>
+        <a href="compras.php" class="btn btn-secondary btn-sm">Registrar Compra</a>
+        <a href="movimientos.php" class="btn btn-secondary btn-sm">Ajuste de Stock</a>
+        <a href="stock.php" class="btn btn-secondary btn-sm">Ver Catálogo Completo</a>
     </div>
 </div>
 
-<div class="data-card">
-    <div class="card-header-flex">
-        <h3 class="card-title">⚖️ Contratos Recientes en Cartera</h3>
-        <a href="contratos.php" class="btn btn-secondary btn-sm">Ver todos los contratos &rarr;</a>
-    </div>
-    <div style="overflow-x: auto;">
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th>Expediente</th>
-                    <th>Título del Contrato</th>
-                    <th>Tipo</th>
-                    <th>Cliente</th>
-                    <th>Abogado Asignado</th>
-                    <th>Monto</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($contratosRecientes)): ?>
-                    <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No hay contratos registrados en la plataforma.</td></tr>
-                <?php else: ?>
-                    <?php foreach ($contratosRecientes as $c): ?>
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: start;">
+    <!-- ÚLTIMOS MOVIMIENTOS -->
+    <div class="data-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1.15rem; color: var(--text-primary);">Últimos Movimientos de Stock</h3>
+            <a href="movimientos.php" class="btn btn-secondary btn-sm">Ver Todos</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
                     <tr>
-                        <td><strong style="color: var(--gold-light);"><?php echo e($c['numero_expediente']); ?></strong></td>
-                        <td><?php echo e($c['titulo']); ?></td>
-                        <td><span style="font-size: 0.85rem; color: var(--text-secondary);"><?php echo e($c['tipo_contrato']); ?></span></td>
-                        <td><?php echo e($c['cliente_nombre']); ?></td>
-                        <td><?php echo e($c['abogado_nombre']); ?></td>
-                        <td><strong><?php echo formato_dinero($c['monto_acordado']); ?></strong></td>
-                        <td>
-                            <span class="status-badge status-<?php echo str_replace(' ', '_', $c['estado']); ?>">
-                                <?php echo e($c['estado']); ?>
-                            </span>
-                        </td>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Stock Nuevo</th>
+                        <th>Responsable</th>
                     </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (empty($movimientosRecientes)): ?>
+                        <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No hay movimientos registrados aún.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($movimientosRecientes as $mov): ?>
+                            <tr>
+                                <td><?php echo formato_fecha($mov['fecha']); ?></td>
+                                <td>
+                                    <?php if ($mov['tipo'] === 'entrada'): ?>
+                                        <span class="badge badge-success">Entrada</span>
+                                    <?php elseif ($mov['tipo'] === 'salida'): ?>
+                                        <span class="badge badge-danger">Salida</span>
+                                    <?php else: ?>
+                                        <span class="badge badge-warning">Ajuste</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <strong><?php echo e($mov['codigo']); ?></strong><br>
+                                    <span style="color: var(--text-secondary); font-size: 0.8rem;"><?php echo e($mov['producto_nombre']); ?></span>
+                                </td>
+                                <td><strong><?php echo ($mov['tipo'] === 'salida' ? '-' : '+') . number_format($mov['cantidad']); ?></strong></td>
+                                <td><?php echo number_format($mov['stock_nuevo']); ?></td>
+                                <td><?php echo e($mov['usuario_nombre']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PRODUCTOS EN ALERTA DE STOCK -->
+    <div class="data-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1.15rem; color: var(--text-primary);">Stock Bajo / Mínimo</h3>
+            <a href="stock.php" class="btn btn-secondary btn-sm">Inventario</a>
+        </div>
+
+        <?php if (empty($productosCriticos)): ?>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Todos los productos tienen existencias suficientes.</p>
+        <?php else: ?>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <?php foreach ($productosCriticos as $prod): ?>
+                    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <strong style="color: var(--text-primary); font-size: 0.88rem;"><?php echo e($prod['nombre']); ?></strong>
+                            <span class="badge badge-danger"><?php echo $prod['stock']; ?> un.</span>
+                        </div>
+                        <div style="font-size: 0.78rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
+                            <span>Cód: <?php echo e($prod['codigo']); ?></span>
+                            <span>Mínimo: <?php echo $prod['stock_minimo']; ?> un.</span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 

@@ -3,44 +3,33 @@
 <footer class="app-footer">
     <div class="footer-inner">
         <div class="footer-brand">
-            <h4 class="brand-font">Abogados &amp; Socios</h4>
+            <h4 class="brand-font" style="color: var(--gold-light); font-size: 1.1rem; margin-bottom: 0.5rem;">Ferretería La Tuerca</h4>
             <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 420px;">
-                Firma legal especializada en contratos mercantiles, derecho societario, propiedad intelectual y litigios. Plataforma de gestión jurídica interna.
+                Especialistas en fijaciones, pernos, tornillería, herramientas industriales y materiales para la construcción. Control integral de compras, ventas y stock.
             </p>
-            <div style="margin-top: 1rem;">
-                <div class="multimedia-bar" style="display: inline-flex;">
-                    <audio id="ambientAudio" loop preload="none">
-                        <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mpeg">
-                    </audio>
-                    <span>🎵 Experiencia Acústica de Oficina Legal:</span>
-                    <button type="button" id="toggleAmbientAudio" class="btn btn-secondary btn-sm" style="border-radius: 20px;">
-                        🔈 Música Ambiente: OFF
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div>
-            <h5 style="color: var(--gold-light); margin-bottom: 0.75rem; font-size: 0.95rem;">Módulos del Sistema</h5>
+            <h5 style="color: var(--gold-light); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase;">Módulos</h5>
             <ul style="list-style: none; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                <li><a href="index.php" style="color: var(--text-secondary); text-decoration: none;">🏛️ Panel de Control</a></li>
-                <li><a href="contratos.php" style="color: var(--text-secondary); text-decoration: none;">📜 Gestión de Contratos</a></li>
-                <li><a href="facturacion.php" style="color: var(--text-secondary); text-decoration: none;">💳 Facturación y Honorarios</a></li>
-                <li><a href="clientes.php" style="color: var(--text-secondary); text-decoration: none;">👥 Clientes y Empresas</a></li>
+                <li><a href="index.php" style="color: var(--text-secondary); text-decoration: none;">Dashboard</a></li>
+                <li><a href="stock.php" style="color: var(--text-secondary); text-decoration: none;">Control de Stock</a></li>
+                <li><a href="movimientos.php" style="color: var(--text-secondary); text-decoration: none;">Entradas / Salidas</a></li>
+                <li><a href="ventas.php" style="color: var(--text-secondary); text-decoration: none;">Ventas</a></li>
+                <li><a href="compras.php" style="color: var(--text-secondary); text-decoration: none;">Compras</a></li>
             </ul>
         </div>
 
         <div>
-            <h5 style="color: var(--gold-light); margin-bottom: 0.75rem; font-size: 0.95rem;">Información del Proyecto</h5>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>Alumno Desarrollador:</strong> Benjamin</p>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>Asignatura:</strong> Desarrollo de Aplicaciones Web</p>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>Stack:</strong> PHP 8 + MySQL + Railway</p>
-            <p style="font-size: 0.85rem; color: var(--text-secondary);"><strong>Herramienta BD:</strong> DBeaver / XAMPP</p>
+            <h5 style="color: var(--gold-light); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase;">Plataforma</h5>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>Sistema:</strong> Ferretería La Tuerca v2.0</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>Entorno:</strong> PHP + MySQL / Railway</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);"><strong>Desarrollo:</strong> Caso Práctico</p>
         </div>
     </div>
 
     <div class="footer-copy">
-        <p>&copy; <?php echo date('Y'); ?> <strong>Abogados &amp; Socios LegalTech</strong>. Todos los derechos reservados. Desarrollado por Benjamin para el Caso Práctico de Desarrollo Web.</p>
+        <p>&copy; <?php echo date('Y'); ?> <strong>Ferretería La Tuerca</strong>. Todos los derechos reservados.</p>
     </div>
 </footer>
 

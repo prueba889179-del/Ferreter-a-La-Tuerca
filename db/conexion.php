@@ -18,7 +18,7 @@ if ($dbUrl) {
     // Variables individuales estándar de Railway o de entorno
     $host = getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: '127.0.0.1';
     $port = getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: '3306';
-    $db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'railway';
+    $db   = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'ferreteria_la_tuerca';
     $user = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
     $pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASSWORD') ?: getenv('DB_PASS') ?: '';
 }
@@ -35,25 +35,24 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     
-    // Auto-inicializar tablas si no existen en Railway
-    $tableCheck = $pdo->query("SHOW TABLES LIKE 'usuarios'")->rowCount();
+    // Auto-inicializar tablas si no existen en Railway / Local
+    $tableCheck = $pdo->query("SHOW TABLES LIKE 'productos'")->rowCount();
     if ($tableCheck === 0 && file_exists(__DIR__ . '/datos.sql')) {
         $sql = file_get_contents(__DIR__ . '/datos.sql');
-        // Eliminar comandos USE y CREATE DATABASE para no fallar con permisos de Railway
         $sqlClean = preg_replace('/CREATE DATABASE[^;]+;/i', '', $sql);
         $sqlClean = preg_replace('/USE[^;]+;/i', '', $sqlClean);
         $pdo->exec($sqlClean);
     }
 } catch (PDOException $e) {
     try {
-        // En caso de que la BD específica no exista y el usuario tenga permisos (e.g. local)
+        // En caso de que la BD específica no exista en local y el usuario tenga permisos
         $dsnWithoutDb = "mysql:host=$host;port=$port;charset=$charset";
         $pdoInit = new PDO($dsnWithoutDb, $user, $pass, $options);
         $pdoInit->exec("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         
         $pdo = new PDO($dsn, $user, $pass, $options);
 
-        $check = $pdo->query("SHOW TABLES LIKE 'usuarios'")->rowCount();
+        $check = $pdo->query("SHOW TABLES LIKE 'productos'")->rowCount();
         if ($check === 0 && file_exists(__DIR__ . '/datos.sql')) {
             $sql = file_get_contents(__DIR__ . '/datos.sql');
             $sqlClean = preg_replace('/CREATE DATABASE[^;]+;/i', '', $sql);
